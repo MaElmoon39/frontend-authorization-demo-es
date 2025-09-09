@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import Ducks from "./Ducks";
 import Login from "./Login";
 import MyProfile from "./MyProfile";
@@ -13,8 +13,9 @@ import "./styles/App.css";
 function App() {
   const [userData, setUserData] = useState({ username: '', email: ''});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const navigate = useNavigate();
+
+  const location = useLocation();
 
   const handleRegistration = ({ username, email, password, confirmPassword, }) => {
     if (password === confirmPassword) {
@@ -38,7 +39,8 @@ function App() {
           setToken(data.jwt);
           setUserData(data.user);
           setIsLoggedIn(true);
-          navigate('/ducks');
+          const redirectPath = location.state?.from?.pathname || '/ducks';
+          navigate(redirectPath);
         }
       })
       .catch(console.error);
@@ -55,7 +57,7 @@ function App() {
       .then(({ username, email }) => {
         setIsLoggedIn(true);
         setUserData({ username, email });
-        navigate('/ducks');
+        // navigate('/ducks'); <--- se elimina, ya no es necesaria
       })
       .catch(console.error);
   }, []);
