@@ -16,7 +16,11 @@ function App() {
           <Ducks />
         </ProtectedRoute>
       } />
-      <Route path="/my-profile" element={<MyProfile />} />
+      <Route path="/my-profile" element={
+        <ProtectedRoute isLoggedIn={isLoggedIn}>
+          <MyProfile />
+        </ProtectedRoute>
+      } />
       <Route
         path="/login"
         element={
